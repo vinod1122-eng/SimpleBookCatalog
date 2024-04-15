@@ -1,0 +1,33 @@
+﻿<!-- Page route set to "/add-new" -->
+@page "/add-new"
+
+<!-- Inject IBookRepository and NavigationManager services -->
+@inject IBookRepository Repository
+@inject NavigationManager Navigation
+
+<!-- Set the page title to "Add New Book" -->
+<PageTitle>
+    Add New Book
+</PageTitle>
+
+<!-- Create a row with justified content -->
+<div class="row justify-content-center">
+    <!-- Create a column with width 6 -->
+    <div class="col-6">
+        <!-- Include the BookForm component with IsEditMode set to false -->
+        <!-- Call the AddBook method when a valid book is submitted -->
+        <BookForm IsEditMode="false" OnValidBookSubmit="AddBook" />
+    </div>
+</div>
+
+@code {
+    // Define the AddBook method to add a new book
+    private async Task AddBook(Book book)
+    {
+        // Call the AddAsync method of the repository to add the book asynchronously
+        await Repository.AddAsync(book);
+
+        // Navigate to the root ("/") after adding the book
+        Navigation.NavigateTo("/");
+    }
+}

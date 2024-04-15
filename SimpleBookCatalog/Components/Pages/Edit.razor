@@ -1,0 +1,37 @@
+﻿<!-- Page route set to "/edit/{id:int}" -->
+@page "/edit/{id:int}"
+
+<!-- Inject IBookRepository and NavigationManager services -->
+@inject IBookRepository Repository
+@inject NavigationManager Navigation
+
+<!-- Set the page title to "Edit Book" -->
+<PageTitle>
+    Edit Book
+</PageTitle>
+
+<!-- Create a row with justified content -->
+<div class="row justify-content-center">
+    <!-- Create a column with width 6 -->
+    <div class="col-6">
+        <!-- Include the BookForm component with IsEditMode set to true and BookId set to the provided Id -->
+        <!-- Call the EditBook method when a valid book is submitted -->
+        <BookForm IsEditMode="true" BookId="@Id" OnValidBookSubmit="EditBook" />
+    </div>
+</div>
+
+@code {
+    // Parameter to receive the book Id from the route
+    [Parameter]
+    public int Id { get; set; }
+
+    // Method to handle editing the book
+    private async Task EditBook(Book book)
+    {
+        // Update the book asynchronously using the repository
+        await Repository.UpdateAsync(book);
+
+        // Navigate back to the root ("/") page
+        Navigation.NavigateTo("/");
+    }
+}

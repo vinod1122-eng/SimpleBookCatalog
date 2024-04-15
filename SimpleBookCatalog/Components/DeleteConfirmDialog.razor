@@ -1,0 +1,39 @@
+﻿<!-- Conditionally render the confirmation dialog if Show is true -->
+@if (Show)
+{
+    <!-- Container for the confirmation dialog -->
+    <div class="confirm-dialog-container">
+        <!-- Confirmation dialog content -->
+        <div class="confirm-dialog">
+            <!-- Confirmation message -->
+            <h3>
+                Are you sure?
+            </h3>
+            <!-- Buttons for cancel and delete actions -->
+            <div class="d-flex flex-row justify-content-end mt-3">
+                <!-- Button to cancel the action -->
+                <button @onclick="OnCancel" class="btn btn-secondary shadow-none">
+                    Cancel
+                </button>
+                <!-- Button to confirm the delete action -->
+                <button @onclick="OnOk" class="btn btn-danger shadow-none ms-3">
+                    Delete
+                </button>
+            </div>
+        </div>
+    </div>
+}
+
+@code {
+    // Parameter to determine whether to show the confirmation dialog
+    [Parameter]
+    public bool Show { get; set; }
+
+    // Event callback for cancel action
+    [Parameter]
+    public EventCallback OnCancel { get; set; }
+
+    // Event callback for delete action
+    [Parameter]
+    public EventCallback OnOk { get; set; }
+}

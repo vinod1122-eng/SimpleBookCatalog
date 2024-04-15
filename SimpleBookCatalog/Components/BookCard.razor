@@ -1,0 +1,62 @@
+﻿<!-- Injecting dependencies -->
+<!-- Injecting the IBookRepository service -->
+<!-- Injecting the NavigationManager service -->
+@inject IBookRepository Repository
+@inject NavigationManager Navigation
+
+<!-- Book card component -->
+<div class="book-card">
+    <!-- Book card body -->
+    <div class="book-card-body">
+        <!-- Displaying the book title -->
+        <h5>@Book.Title</h5>
+        <!-- Displaying the book author and publication date -->
+        By @Book.Author | @Book.PublicationDate?.ToString("MMMM dd, yyyy")
+    </div>
+    <!-- Action buttons -->
+    <div class="actions">
+        <!-- Link to edit page with book Id -->
+        <a href="@($"/edit/{Book.Id}")" class="btn btn-warning shadow-none">Edit</a>
+        <!-- Button to open delete confirmation dialog -->
+        <button @onclick="OpenConfirmDialog" class="btn btn-danger shadow-none ms-3">Delete</button>
+    </div>
+</div>
+
+<!-- Delete confirmation dialog -->
+<DeleteConfirmDialog Show="showConfirmDialog"
+                     OnCancel="CancelDelete"
+                     OnOk="DeleteBook" />
+
+@code {
+    // Variable to track if the delete confirmation dialog should be shown
+    private bool showConfirmDialog;
+
+    // Book parameter
+    [Parameter]
+    public required Book Book { get; set; }
+
+    // Method to open the delete confirmation dialog
+    private void OpenConfirmDialog()
+    {
+        showConfirmDialog = true;
+    }
+
+    // Method to cancel the delete operation
+    private void CancelDelete()
+    {
+        showConfirmDialog = false;
+    }
+
+    // Method to delete the book
+    private async Task DeleteBook()
+    {
+        // Delete the book asynchronously by its Id
+        await Repository.DeleteByIdAsync(Book.Id);
+
+        // Close the delete confirmation dialog
+        showConfirmDialog = false;
+
+        // Navigate back to the root ("/") page
+        Navigation.NavigateTo("/");
+    }
+}

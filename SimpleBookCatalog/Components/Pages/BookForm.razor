@@ -1,0 +1,103 @@
+﻿<!-- Inject IBookRepository service -->
+@inject IBookRepository Repository
+
+<!-- Check if the Book object is not null -->
+@if (Book is not null)
+{
+    <!-- Render an EditForm with Enhance set to true -->
+    <EditForm Enhance="true" method="post" FormName="AddOrEditBookForm" OnValidSubmit="AddOrEditBook" Model="Book" autocomplete="off">
+        <!-- Display the title -->
+        <h3>
+            @Title
+        </h3>
+        <!-- If in edit mode, render a hidden input for the book Id -->
+        @if (IsEditMode)
+        {
+            <input type="hidden" name="Book.Id" value="@Book.Id" />
+        }
+        <!-- Input fields for title, author, publication date, and category -->
+        <div class="mb-3">
+            <label for="title" class="form-label">
+                Title
+            </label>
+            <InputText id="title" @bind-Value="Book.Title" class="form-control shadow-none"></InputText>
+        </div>
+        <div class="mb-3">
+            <label for="author" class="form-label">
+                Author
+            </label>
+            <InputText id="author" @bind-Value="Book.Author" class="form-control shadow-none"></InputText>
+        </div>
+        <div class="mb-3">
+            <label for="publication-date" class="form-label">
+                Date Published
+            </label>
+            <InputDate id="publication-date" @bind-Value="Book.PublicationDate" class="form-control shadow-none"></InputDate>
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">
+                Category
+            </label>
+            <InputSelect id="category" @bind-Value="Book.Category" class="form-control shadow-none">
+                <option value="0">
+                    Select Category
+                </option>
+                <!-- Render options for all categories -->
+                @foreach (var category in Enum.GetValues(typeof(Category)))
+                {
+                    <option value="@category">
+                        @category.ToString()
+                    </option>
+                }
+            </InputSelect>
+        </div>
+        <!-- Submit button and back to list button -->
+        <div class="mb-3">
+            <button class="btn btn-primary shadow-none">
+                Submit
+            </button>
+            <a href="/" class="btn btn-secondary shadow-none ms-3">
+                Back To List
+            </a>
+        </div>
+        <!-- Validation components -->
+        <DataAnnotationsValidator />
+        <ValidationSummary />
+    </EditForm>
+}
+
+@code {
+    // Parameters
+    [Parameter]
+    public bool IsEditMode { get; set; } = false;
+    [Parameter]
+    public EventCallback<Book> OnValidBookSubmit { get; set; }
+    [Parameter]
+    public int BookId { get; set; }
+    [SupplyParameterFromForm]
+    public Book? Book { get; set; }
+
+    // Title property
+    private string Title => IsEditMode ? $"Edit Book {BookId}" : "Add New Book";
+
+    // Initialization method
+    protected override async Task OnInitializedAsync()
+    {
+        // If in edit mode, get the book by its Id
+        if (IsEditMode)
+        {
+            Book ??= await Repository.GetByIdAsync(BookId);
+        }
+        // If not in edit mode, create a new book
+        else
+        {
+            Book ??= new();
+        }
+    }
+
+    // Add or edit book method
+    private async Task AddOrEditBook()
+    {
+        await OnValidBookSubmit.InvokeAsync(Book);
+    }
+}

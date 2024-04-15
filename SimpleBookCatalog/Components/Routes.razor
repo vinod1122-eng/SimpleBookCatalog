@@ -1,0 +1,10 @@
+﻿<Router AppAssembly="typeof(Program).Assembly">
+    <!-- This section is executed when a matching route is found -->
+    <Found Context="routeData">
+        <!-- RouteView renders the component associated with the current route -->
+        <RouteView RouteData="routeData" DefaultLayout="typeof(Layout.MainLayout)" />
+
+        <!-- FocusOnNavigate focuses on the first <h1> element after navigation -->
+        <FocusOnNavigate RouteData="routeData" Selector="h1" />
+    </Found>
+</Router>

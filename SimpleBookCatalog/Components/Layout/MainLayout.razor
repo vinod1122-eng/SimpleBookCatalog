@@ -1,0 +1,25 @@
+﻿@inherits LayoutComponentBase
+
+<!-- The main layout structure -->
+<div class="page">
+
+    <!-- Main content area -->
+    <main>
+
+        <!-- Content article -->
+        <article class="content pt-5">
+            <!-- Rendered body content will be inserted here -->
+            @Body
+        </article>
+    </main>
+</div>
+
+<!-- Error UI for displaying unhandled errors -->
+<div id="blazor-error-ui">
+    <!-- Error message -->
+    An unhandled error has occurred.
+    <!-- Reload link to refresh the page -->
+    <a href="" class="reload">Reload</a>
+    <!-- Dismiss link to close the error UI -->
+    <a class="dismiss">🗙</a>
+</div>
