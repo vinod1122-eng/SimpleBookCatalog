@@ -4,7 +4,7 @@ Hey there, if you're just starting out with Blazor and Entity Framework Core, I'
 
 In this project, we're going to build a simple app for keeping track of books. You'll learn how to add new books, list all the books you have, update details of existing books, and even delete books if you want.
 
-This project is perfect for those who already know a bit about Blazor and Entity Framework Core. We'll show you how to do all these things using these frameworks in .NET 8.
+This project is perfect for those who already know a bit about Blazor and Entity Framework Core. I'll show you how to do all these things using these frameworks in .NET 8.
 
 To join in, you'll need to have .NET 8 and Visual Studio 2022 Community Edition installed on your computer. By the end of the project, you'll understand how to:
 
